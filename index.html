@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký Tư Vấn & Thi Thử</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .form-radio, .form-checkbox {
+            color: #dc2626;
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 0.25rem;
+            border-color: #d1d5db;
+        }
+        .form-radio { border-radius: 50%; }
+        
+        .reveal-content {
+            transition: all 0.3s ease-in-out;
+            max-height: 1000px;
+            opacity: 1;
+            overflow: hidden;
+        }
+        .reveal-content.hidden {
+            max-height: 0;
+            opacity: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .matrix-table th { font-weight: 500; color: #4b5563; }
+        .matrix-table tr { transition: background-color 0.2s; }
+        .matrix-table tbody tr:hover { background-color: #fef2f2; }
+        
+        /* Ẩn viền fieldset mặc định */
+        fieldset { border: none; padding: 0; margin: 0; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans antialiased py-10 min-h-screen flex flex-col items-center">
+
+<div class="max-w-4xl w-full mx-auto bg-white p-6 sm:p-10 rounded-xl shadow-xl border-t-8 border-red-600">
+    <div class="text-center mb-8">
+        <!-- Logo -->
+        <img src="https://lh3.googleusercontent.com/d/1S0TWsqJ5sqsIrxYiEHzKLAno4Ath4kCG" onerror="this.onerror=null; this.src='https://placehold.co/400x100/dc2626/white?text=LOGO+TRUNG+T%C3%82M'; this.alt='Logo Trung Tâm'" alt="Logo Trung Tâm" class="h-24 mx-auto mb-6 object-contain">
+        
+        <h1 id="main-title" class="text-2xl sm:text-3xl font-bold text-red-600 mb-2 uppercase tracking-wide">Đăng Ký Miễn Phí</h1>
+        <p id="main-desc" class="text-gray-500">Vui lòng lựa chọn dịch vụ bạn quan tâm dưới đây.</p>
+    </div>
+
+    <!-- MÀN HÌNH 1: CHỌN DỊCH VỤ -->
+    <div id="selection-screen" class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 mb-8">
+        <div onclick="startForm('thi_thu')" class="cursor-pointer group bg-white border-2 border-red-100 rounded-xl p-8 text-center hover:border-red-600 hover:shadow-lg transition duration-300">
+            <div class="w-16 h-16 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-red-600 group-hover:text-white transition duration-300">
+                <i class="fas fa-file-alt text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Đăng ký thi thử</h3>
+            <p class="text-sm text-gray-500">Đánh giá năng lực tiếng Anh của bạn hoàn toàn miễn phí.</p>
+        </div>
+        
+        <div onclick="startForm('tu_van')" class="cursor-pointer group bg-white border-2 border-red-100 rounded-xl p-8 text-center hover:border-red-600 hover:shadow-lg transition duration-300">
+            <div class="w-16 h-16 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-red-600 group-hover:text-white transition duration-300">
+                <i class="fas fa-comments text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Đăng ký tư vấn</h3>
+            <p class="text-sm text-gray-500">Nhận tư vấn lộ trình học, du học, học bổng chi tiết.</p>
+        </div>
+    </div>
+
+    <!-- MÀN HÌNH 2: FORM ĐIỀN THÔNG TIN -->
+    <form id="mainForm" class="space-y-8 hidden">
+        <!-- Trường ẩn để phân loại dữ liệu trên Sheet -->
+        <input type="hidden" name="Loại đăng ký" id="loai_dang_ky" value="">
+
+        <!-- === PHẦN THÔNG TIN CHUNG (TRÊN) === -->
+        <div class="space-y-6">
+            <h2 class="text-xl font-bold text-gray-800 border-b-2 border-red-100 pb-2">Thông tin cá nhân</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-base font-semibold text-gray-800 mb-2">1. Họ và tên <span class="text-red-500">*</span></label>
+                    <input type="text" name="Họ và tên" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition" placeholder="Nhập họ và tên của bạn">
+                </div>
+                <div>
+                    <label class="block text-base font-semibold text-gray-800 mb-2">2. Sinh năm <span class="text-red-500">*</span></label>
+                    <input type="number" name="Sinh năm" min="1950" max="2020" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition" placeholder="Ví dụ: 2005">
+                </div>
+                <div>
+                    <label class="block text-base font-semibold text-gray-800 mb-2">3. Số điện thoại <span class="text-red-500">*</span></label>
+                    <input type="tel" name="Số điện thoại" required pattern="[0-9]{10,11}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition" placeholder="Nhập số điện thoại">
+                </div>
+                <div>
+                    <label class="block text-base font-semibold text-gray-800 mb-2">4. Địa chỉ Email</label>
+                    <input type="email" name="Email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition" placeholder="example@gmail.com">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-base font-semibold text-gray-800 mb-3">5. Hình thức liên hệ mong muốn? <span class="text-red-500">*</span></label>
+                    <div class="flex flex-col gap-3">
+                        <label class="inline-flex items-center cursor-pointer group"><input type="radio" name="Phương thức liên hệ" value="Zalo hoặc tin nhắn" required class="form-radio text-red-600 focus:ring-red-500"><span class="ml-2 group-hover:text-red-600">Zalo hoặc tin nhắn</span></label>
+                        <label class="inline-flex items-center cursor-pointer group"><input type="radio" name="Phương thức liên hệ" value="Gọi điện thoại" required class="form-radio text-red-600 focus:ring-red-500"><span class="ml-2 group-hover:text-red-600">Gọi điện thoại</span></label>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-base font-semibold text-gray-800 mb-3">6. Thời gian nào tốt nhất để liên hệ? <span class="text-red-500">*</span></label>
+                    <div class="flex flex-col gap-3">
+                        <label class="inline-flex items-center cursor-pointer group"><input type="radio" name="Thời gian liên hệ" value="Sáng: 08:00-12:00" required class="form-radio text-red-600 focus:ring-red-500"><span class="ml-2 group-hover:text-red-600">Sáng (08:00 - 12:00)</span></label>
+                        <label class="inline-flex items-center cursor-pointer group"><input type="radio" name="Thời gian liên hệ" value="Chiều: 13:00-17:00" required class="form-radio text-red-600 focus:ring-red-500"><span class="ml-2 group-hover:text-red-600">Chiều (13:00 - 17:00)</span></label>
+                        <label class="inline-flex items-center cursor-pointer group"><input type="radio" name="Thời gian liên hệ" value="Tối: 17:00-21:00" required class="form-radio text-red-600 focus:ring-red-500"><span class="ml-2 group-hover:text-red-600">Tối (17:00 - 21:00)</span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- === PHẦN THI THỬ (Sẽ bật/tắt bằng JavaScript - Dùng Fieldset để disable input bên trong) === -->
+        <fieldset id="fs-thi-thu" disabled class="hidden">
+            <div class="bg-red-50 p-6 rounded-xl border border-red-100">
+                <h2 class="text-xl font-bold text-red-700 mb-4 flex items-center"><i class="fas fa-file-alt mr-2"></i> PHẦN 1: ĐĂNG KÝ THI THỬ</h2>
+                
+                <div class="space-y-4">
+                    <label class="block text-base font-semibold text-gray-800 mb-3">Bạn muốn thi thử loại nào? <span class="text-red-500">*</span></label>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <label class="cursor-pointer group bg-white p-3 rounded border hover:border-red-500 transition"><input type="radio" name="Bạn muốn thi thử" value="Tiếng Anh giao tiếp" required onchange="showHinhThucThiThu()" class="mr-2 form-radio text-red-600"> Tiếng Anh giao tiếp</label>
+                        <label class="cursor-pointer group bg-white p-3 rounded border hover:border-red-500 transition"><input type="radio" name="Bạn muốn thi thử" value="Tiếng Anh chứng Chỉ IELTS" required onchange="showHinhThucThiThu()" class="mr-2 form-radio text-red-600"> Tiếng Anh chứng Chỉ IELTS</label>
+                        <label class="cursor-pointer group bg-white p-3 rounded border hover:border-red-500 transition"><input type="radio" name="Bạn muốn thi thử" value="Tiếng Anh thường ngày" required onchange="showHinhThucThiThu()" class="mr-2 form-radio text-red-600"> Tiếng Anh thường ngày</label>
+                    </div>
+
+                    <div id="sec-hinh-thuc-thi-thu" class="reveal-content hidden pt-4 mt-4 border-t border-red-200">
+                        <label class="block text-base font-semibold text-gray-800 mb-3">Hình thức thi thử mong muốn: <span class="text-red-500">*</span></label>
+                        <div class="flex flex-col sm:flex-row gap-6">
+                            <label class="cursor-pointer group"><input type="radio" name="Hình thức thi thử" value="Offline - Tại Trung Tâm" class="mr-2 form-radio text-red-600"> Offline - Tại Trung Tâm</label>
+                            <label class="cursor-pointer group"><input type="radio" name="Hình thức thi thử" value="Online - Qua mạng" class="mr-2 form-radio text-red-600"> Online - Qua mạng</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- === PHẦN TƯ VẤN (Sẽ bật/tắt bằng JavaScript) === -->
+        <fieldset id="fs-tu-van" disabled class="hidden">
+            <div class="bg-blue-50 p-6 rounded-xl border border-blue-100">
+                <h2 class="text-xl font-bold text-blue-700 mb-4 flex items-center"><i class="fas fa-comments mr-2"></i> PHẦN 2: ĐĂNG KÝ TƯ VẤN</h2>
+                
+                <label class="block text-base font-semibold text-gray-800 mb-4">Bạn quan tâm đến vấn đề nào? (Có thể chọn nhiều): <span class="text-red-500">*</span></label>
+                
+                <div class="space-y-5">
+                    <!-- Tiếng Anh -->
+                    <div>
+                        <label class="inline-flex items-center cursor-pointer group">
+                            <input type="checkbox" name="Mối quan tâm chính" value="Khoá học Tiếng Anh" id="chkTiengAnh" onchange="toggleSection('chkTiengAnh', 'secTiengAnh')" class="form-checkbox text-blue-600 focus:ring-blue-500">
+                            <span class="ml-2 font-medium text-lg group-hover:text-blue-600 transition">Khoá học Tiếng Anh</span>
+                        </label>
+                        <div id="secTiengAnh" class="reveal-content hidden ml-8 mt-3 bg-white p-5 rounded-lg border shadow-sm space-y-5">
+                            <div>
+                                <p class="text-sm font-bold text-gray-700 mb-3">Chọn khoá học:</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <label class="cursor-pointer"><input type="radio" name="Chi tiết Tiếng Anh (Khoá học)" value="Tiếng Anh cho người mới bắt đầu (Beginner)" onchange="showHinhThucHoc()" class="mr-2 form-radio text-blue-600"> Cho người mới bắt đầu</label>
+                                    <label class="cursor-pointer"><input type="radio" name="Chi tiết Tiếng Anh (Khoá học)" value="Tiếng Anh cơ bản (Elementary)" onchange="showHinhThucHoc()" class="mr-2 form-radio text-blue-600"> Cơ bản (Elementary)</label>
+                                    <label class="cursor-pointer"><input type="radio" name="Chi tiết Tiếng Anh (Khoá học)" value="Tiếng Anh trung cấp (Intermediate)" onchange="showHinhThucHoc()" class="mr-2 form-radio text-blue-600"> Trung cấp (Intermediate)</label>
+                                    <label class="cursor-pointer"><input type="radio" name="Chi tiết Tiếng Anh (Khoá học)" value="Tiếng Anh nâng cao (Advanced)" onchange="showHinhThucHoc()" class="mr-2 form-radio text-blue-600"> Nâng cao (Advanced)</label>
+                                    <label class="cursor-pointer"><input type="radio" name="Chi tiết Tiếng Anh (Khoá học)" value="Khóa học luyện thi (IELTS, TOEIC, v.v.)" onchange="showHinhThucHoc()" class="mr-2 form-radio text-blue-600"> Luyện thi (IELTS, TOEIC...)</label>
+                                    <label class="cursor-pointer"><input type="radio" name="Chi tiết Tiếng Anh (Khoá học)" value="Tiếng Anh giao tiếp/thương mại" onchange="showHinhThucHoc()" class="mr-2 form-radio text-blue-600"> Giao tiếp/Thương mại</label>
+                                    <label class="cursor-pointer"><input type="radio" name="Chi tiết Tiếng Anh (Khoá học)" value="Tiếng Anh Thiếu Nhi (5-10 Tuổi)" onchange="showHinhThucHoc()" class="mr-2 form-radio text-blue-600"> Thiếu Nhi (5-10 Tuổi)</label>
+                                    <label class="cursor-pointer"><input type="radio" name="Chi tiết Tiếng Anh (Khoá học)" value="Tiếng Anh Thiếu Niên (11-18 Tuổi)" onchange="showHinhThucHoc()" class="mr-2 form-radio text-blue-600"> Thiếu Niên (11-18 Tuổi)</label>
+                                </div>
+                            </div>
+                            <div id="secHinhThucHoc" class="reveal-content hidden pt-4 border-t border-gray-100">
+                                <p class="text-sm font-bold text-blue-700 mb-3">Hình thức học mong muốn:</p>
+                                <div class="flex flex-col sm:flex-row gap-4">
+                                    <label class="cursor-pointer"><input type="radio" name="Hình thức học Tiếng Anh" value="Offline - Tại Trung Tâm" class="mr-2 form-radio text-blue-600"> Offline</label>
+                                    <label class="cursor-pointer"><input type="radio" name="Hình thức học Tiếng Anh" value="Online - Qua mạng" class="mr-2 form-radio text-blue-600"> Online</label>
+                                    <label class="cursor-pointer"><input type="radio" name="Hình thức học Tiếng Anh" value="Cả hai - Linh hoạt" class="mr-2 form-radio text-blue-600"> Cả hai (Linh hoạt)</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Du học -->
+                    <div>
+                        <label class="inline-flex items-center cursor-pointer group">
+                            <input type="checkbox" name="Mối quan tâm chính" value="Tư vấn Hồ sơ học bổng du học" id="chkDuHoc" onchange="toggleSection('chkDuHoc', 'secDuHoc')" class="form-checkbox text-blue-600 focus:ring-blue-500">
+                            <span class="ml-2 font-medium text-lg group-hover:text-blue-600 transition">Tư vấn Hồ sơ học bổng du học</span>
+                        </label>
+                        <div id="secDuHoc" class="reveal-content hidden ml-8 mt-2 space-y-2">
+                            <div class="flex flex-wrap gap-4 items-center mt-2">
+                                <label class="cursor-pointer"><input type="radio" name="Chi tiết Du học" value="Anh Quốc" class="mr-1 form-radio text-blue-600"> Anh Quốc</label>
+                                <label class="cursor-pointer"><input type="radio" name="Chi tiết Du học" value="Úc" class="mr-1 form-radio text-blue-600"> Úc</label>
+                                <label class="cursor-pointer"><input type="radio" name="Chi tiết Du học" value="Mỹ" class="mr-1 form-radio text-blue-600"> Mỹ</label>
+                                <label class="cursor-pointer"><input type="radio" name="Chi tiết Du học" value="Canada" class="mr-1 form-radio text-blue-600"> Canada</label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="Chi tiết Du học" value="Khác" id="radioDuHocKhac" onchange="toggleInput('radioDuHocKhac', 'txtDuHocKhac')" class="mr-1 form-radio text-blue-600"> Khác
+                                    <input type="text" id="txtDuHocKhac" name="Chi tiết Du học (Khác)" class="hidden border border-gray-300 rounded px-3 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Điền cụ thể...">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ĐH Quốc tế -->
+                    <div>
+                        <label class="inline-flex items-center cursor-pointer group">
+                            <input type="checkbox" name="Mối quan tâm chính" value="Tư vấn Hồ sơ học Bổng Đại học Quốc tế" id="chkDHQT" onchange="toggleSection('chkDHQT', 'secDHQT')" class="form-checkbox text-blue-600 focus:ring-blue-500">
+                            <span class="ml-2 font-medium text-lg group-hover:text-blue-600 transition">Tư vấn Hồ sơ học Bổng Đại học Quốc tế</span>
+                        </label>
+                        <div id="secDHQT" class="reveal-content hidden ml-8 mt-2 space-y-2">
+                            <div class="flex flex-wrap gap-5 mt-2">
+                                <label class="cursor-pointer"><input type="radio" name="Chi tiết ĐH Quốc tế" value="BUV" class="mr-1 form-radio text-blue-600"> BUV</label>
+                                <label class="cursor-pointer"><input type="radio" name="Chi tiết ĐH Quốc tế" value="RMIT" class="mr-1 form-radio text-blue-600"> RMIT</label>
+                                <label class="cursor-pointer"><input type="radio" name="Chi tiết ĐH Quốc tế" value="VinUni" class="mr-1 form-radio text-blue-600"> VinUni</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Định cư -->
+                    <div>
+                        <label class="inline-flex items-center cursor-pointer group">
+                            <input type="checkbox" name="Mối quan tâm chính" value="Tư vấn Định cư" id="chkDinhCu" onchange="toggleSection('chkDinhCu', 'secDinhCu')" class="form-checkbox text-blue-600 focus:ring-blue-500">
+                            <span class="ml-2 font-medium text-lg group-hover:text-blue-600 transition">Tư vấn Định cư</span>
+                        </label>
+                        <div id="secDinhCu" class="reveal-content hidden ml-8 mt-2 space-y-2">
+                            <div class="flex flex-wrap gap-5 mt-2">
+                                <label class="cursor-pointer"><input type="radio" name="Chi tiết Định cư" value="Canada" class="mr-1 form-radio text-blue-600"> Canada</label>
+                                <label class="cursor-pointer"><input type="radio" name="Chi tiết Định cư" value="Mỹ" class="mr-1 form-radio text-blue-600"> Mỹ</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hướng nghiệp -->
+                    <div>
+                        <label class="inline-flex items-center cursor-pointer group">
+                            <input type="checkbox" name="Mối quan tâm chính" value="Tư vấn Hướng Nghiệp" class="form-checkbox text-blue-600 focus:ring-blue-500">
+                            <span class="ml-2 font-medium text-lg group-hover:text-blue-600 transition">Tư vấn Hướng Nghiệp</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- === PHẦN THÔNG TIN CHUNG (DƯỚI) === -->
+        <div class="space-y-8 border-t-2 border-red-100 pt-6">
+            <!-- Mục tiêu học tập -->
+            <div>
+                <label class="block text-base font-semibold text-gray-800 mb-1">7. Vui lòng cho biết mục tiêu học tập tiếng Anh cụ thể của bạn là gì?</label>
+                <p class="text-sm text-gray-500 mb-3">(Ví dụ: đạt IELTS 6.5, giao tiếp thành thạo, phục vụ công việc...)</p>
+                <textarea name="Mục tiêu học tập" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition" placeholder="Nhập mục tiêu của bạn..."></textarea>
+            </div>
+
+            <!-- Xếp hạng yếu tố -->
+            <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <label class="block text-base font-semibold text-gray-800 mb-2">8. Xếp hạng các yếu tố theo mức độ quan trọng đối với bạn khi chọn khóa học <span class="text-red-500">*</span></label>
+                <p class="text-sm text-gray-500 mb-6">(1 là quan trọng nhất, 4 là ít quan trọng nhất).</p>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full matrix-table min-w-[500px]">
+                        <thead>
+                            <tr class="border-b-2 border-gray-200">
+                                <th class="text-left py-4 px-2 w-2/5"></th>
+                                <th class="text-center py-4 px-2 w-[15%]">1</th>
+                                <th class="text-center py-4 px-2 w-[15%]">2</th>
+                                <th class="text-center py-4 px-2 w-[15%]">3</th>
+                                <th class="text-center py-4 px-2 w-[15%]">4</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700">
+                            <tr class="border-b border-gray-100 bg-gray-50">
+                                <td class="py-4 px-3 font-medium">Chất lượng giáo viên</td>
+                                <td class="text-center"><input type="radio" name="Xếp hạng: Chất lượng giáo viên" value="1" required class="form-radio w-5 h-5 cursor-pointer"></td>
+                                <td class="text-center"><input type="radio" name="Xếp hạng: Chất lượng giáo viên" value="2" required class="form-radio w-5 h-5 cursor-pointer"></td>
+                                <td class="text-center"><input type="radio" name="Xếp hạng: Chất lượng giáo viên" value="3" required class="form-radio w-5 h-5 cursor-pointer"></td>
+                                <td class="text-center"><input type="radio" name="Xếp hạng: Chất lượng giáo viên" value="4" required class="form-radio w-5 h-5 cursor-pointer"></td>
+                            </tr>
+                            <tr class="border-b border-gray-100">
+                                <td class="py-4 px-3 font-medium">Chi phí khóa học</td>
+                                <td class="text-center"><input type="radio" name="Xếp hạng: Chi phí" value="1" required class="form-radio w-5 h-5 cursor-pointer"></td>
+                                <td class="text-center"><input type="radio" name="Xếp hạng: Chi phí" value="2" required class="form-radio w-5 h-5 cursor-pointer"></td>
+                                <td class="text-center"><input type="radio" name="Xếp hạng: Chi phí" value="3" required class="form-radio w-5 h-5 cursor-pointer"></td>
+                                <td class="text-center"><input type="radio" name="Xếp hạng: Chi phí" value="4" required class="form-radio w-5 h-5 cursor-pointer"></td>
+                            </tr>
+                            <tr class="border-b border-gray-100 bg-gray-50">
+                                <td class="py-4 px-3 font-medium">Lịch học linh hoạt</td>
+                                <td class="text-center"><input type="radio" name="Xếp hạng: Lịch học" value="1" required class="form-radio w-5 h-5 cursor-pointer"></td>
+                                <td class="text-center"><input type="radio" name="Xếp hạng: Lịch học" value="2" required class="form-radio w-5 h-5 cursor-pointer"></td>
+                                <td class="text-center"><input type="radio" name="Xếp hạng: Lịch học" value="3" required class="form-radio w-5 h-5 cursor-pointer"></td>
+                                <td class="text-center"><input type="radio" name="Xếp hạng: Lịch học" value="4" required class="form-radio w-5 h-5 cursor-pointer"></td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-3 font-medium">Phương pháp giảng dạy</td>
+                                <td class="text-center"><input type="radio" name="Xếp hạng: Phương pháp" value="1" required class="form-radio w-5 h-5 cursor-pointer"></td>
+                                <td class="text-center"><input type="radio" name="Xếp hạng: Phương pháp" value="2" required class="form-radio w-5 h-5 cursor-pointer"></td>
+                                <td class="text-center"><input type="radio" name="Xếp hạng: Phương pháp" value="3" required class="form-radio w-5 h-5 cursor-pointer"></td>
+                                <td class="text-center"><input type="radio" name="Xếp hạng: Phương pháp" value="4" required class="form-radio w-5 h-5 cursor-pointer"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Kênh biết đến -->
+            <div>
+                <label class="block text-base font-semibold text-gray-800 mb-3">9. Bạn biết đến chúng tôi qua kênh nào? <span class="text-red-500">*</span></label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <label class="cursor-pointer group"><input type="radio" name="Kênh biết đến" value="Mạng xã hội" required class="mr-2 form-radio text-red-600 focus:ring-red-500"> Mạng xã hội (Facebook, Tiktok, Zalo...)</label>
+                    <label class="cursor-pointer group"><input type="radio" name="Kênh biết đến" value="Website/Tìm kiếm Google" class="mr-2 form-radio text-red-600 focus:ring-red-500"> Website/Tìm kiếm Google</label>
+                    <label class="cursor-pointer group"><input type="radio" name="Kênh biết đến" value="Bạn bè/Người thân giới thiệu" class="mr-2 form-radio text-red-600 focus:ring-red-500"> Bạn bè/Người thân giới thiệu</label>
+                    <label class="cursor-pointer group"><input type="radio" name="Kênh biết đến" value="Quảng cáo trực tuyến" class="mr-2 form-radio text-red-600 focus:ring-red-500"> Quảng cáo trực tuyến</label>
+                    <label class="cursor-pointer group"><input type="radio" name="Kênh biết đến" value="Tờ rơi/Sự kiện" class="mr-2 form-radio text-red-600 focus:ring-red-500"> Tờ rơi/Sự kiện</label>
+                    <label class="flex items-center gap-2 cursor-pointer group">
+                        <input type="radio" name="Kênh biết đến" value="Khác" id="radioKenhKhac" onchange="toggleInput('radioKenhKhac', 'txtKenhKhac')" class="mr-1 form-radio text-red-600 focus:ring-red-500"> Khác
+                        <input type="text" id="txtKenhKhac" name="Kênh biết đến (Khác)" class="hidden border border-gray-300 rounded-lg px-3 py-1.5 w-full text-sm focus:ring-2 focus:ring-red-500 focus:outline-none" placeholder="Vui lòng ghi rõ...">
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Buttons -->
+        <div class="pt-6 border-t border-gray-200 flex flex-col sm:flex-row-reverse gap-4">
+            <!-- Nút chính: Nộp Đơn -->
+            <button type="submit" id="submitBtn" class="w-full sm:w-2/3 bg-red-600 hover:bg-red-700 text-white text-lg font-bold py-4 px-6 rounded-xl transition duration-200 flex justify-center items-center shadow-lg hover:shadow-xl">
+                <span>Nộp đơn đăng ký</span>
+                <i id="spinner" class="fas fa-circle-notch fa-spin ml-2 hidden"></i>
+            </button>
+            
+            <!-- Nút phụ: Đăng ký cái còn lại -->
+            <button type="button" id="btnAddOther" onclick="addOtherMode()" class="w-full sm:w-1/3 bg-white hover:bg-gray-50 text-red-600 border-2 border-red-600 text-base font-bold py-4 px-4 rounded-xl transition duration-200 flex justify-center items-center">
+                <span>Đăng ký thêm...</span>
+            </button>
+        </div>
+    </form>
+    
+    <!-- Success Message -->
+    <div id="successMsg" class="hidden mt-4 bg-green-50 text-green-700 p-8 rounded-xl border border-green-200 text-center shadow-sm">
+        <i class="fas fa-check-circle text-6xl mb-4 text-green-500"></i>
+        <h2 class="text-2xl font-bold mb-2">Đơn đã nộp thành công!</h2>
+        <p class="text-lg">Cảm ơn bạn đã quan tâm. Chúng tôi sẽ liên hệ lại trong thời gian sớm nhất.</p>
+        <button onclick="location.reload()" class="mt-8 text-sm text-green-800 underline hover:text-green-600 font-semibold">Quay về trang chủ</button>
+    </div>
+</div>
+
+<script>
+    // --- FLOW LOGIC: THI THỬ vs TƯ VẤN ---
+    let currentMode = '';
+
+    function startForm(mode) {
+        document.getElementById('selection-screen').classList.add('hidden');
+        document.getElementById('mainForm').classList.remove('hidden');
+        
+        currentMode = mode;
+        const btnAddOther = document.getElementById('btnAddOther');
+        const loaiDangKy = document.getElementById('loai_dang_ky');
+        
+        if (mode === 'thi_thu') {
+            loaiDangKy.value = "Chỉ Thi Thử";
+            document.getElementById('main-title').innerText = "ĐĂNG KÝ THI THỬ";
+            document.getElementById('fs-thi-thu').disabled = false;
+            document.getElementById('fs-thi-thu').classList.remove('hidden');
+            
+            btnAddOther.querySelector('span').innerText = "+ Đăng ký thêm Tư Vấn";
+        } else {
+            loaiDangKy.value = "Chỉ Tư Vấn";
+            document.getElementById('main-title').innerText = "ĐĂNG KÝ TƯ VẤN";
+            document.getElementById('fs-tu-van').disabled = false;
+            document.getElementById('fs-tu-van').classList.remove('hidden');
+            
+            btnAddOther.querySelector('span').innerText = "+ Đăng ký thêm Thi Thử";
+        }
+    }
+
+    function addOtherMode() {
+        document.getElementById('fs-thi-thu').disabled = false;
+        document.getElementById('fs-thi-thu').classList.remove('hidden');
+        
+        document.getElementById('fs-tu-van').disabled = false;
+        document.getElementById('fs-tu-van').classList.remove('hidden');
+        
+        document.getElementById('loai_dang_ky').value = "Cả Thi Thử & Tư Vấn";
+        document.getElementById('main-title').innerText = "ĐĂNG KÝ THI THỬ & TƯ VẤN";
+        
+        document.getElementById('btnAddOther').classList.add('hidden');
+        
+        const elementToScroll = currentMode === 'thi_thu' ? document.getElementById('fs-tu-van') : document.getElementById('fs-thi-thu');
+        elementToScroll.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // --- UI LOGIC BÊN TRONG FORM ---
+    function showHinhThucThiThu() {
+        const sec = document.getElementById('sec-hinh-thuc-thi-thu');
+        sec.classList.remove('hidden');
+        const radios = sec.querySelectorAll('input[type="radio"]');
+        radios.forEach(r => r.required = true);
+    }
+
+    function toggleSection(checkboxId, sectionId) {
+        const checkbox = document.getElementById(checkboxId);
+        const section = document.getElementById(sectionId);
+        if(checkbox.checked) {
+            section.classList.remove('hidden');
+        } else {
+            section.classList.add('hidden');
+            const radios = section.querySelectorAll('input[type="radio"]');
+            radios.forEach(r => r.checked = false);
+            if(sectionId === 'secTiengAnh') {
+                document.getElementById('secHinhThucHoc').classList.add('hidden');
+            }
+        }
+    }
+
+    function showHinhThucHoc() {
+        document.getElementById('secHinhThucHoc').classList.remove('hidden');
+    }
+
+    function toggleInput(radioId, inputId) {
+        const radio = document.getElementById(radioId);
+        const input = document.getElementById(inputId);
+        const radioName = radio.name;
+        document.querySelectorAll(`input[name="${radioName}"]`).forEach(r => {
+            r.addEventListener('change', () => {
+                if(radio.checked) {
+                    input.classList.remove('hidden');
+                    input.required = true;
+                } else {
+                    input.classList.add('hidden');
+                    input.required = false;
+                    input.value = '';
+                }
+            });
+        });
+        if(radio.checked) {
+            input.classList.remove('hidden');
+            input.required = true;
+        }
+    }
+
+    // --- FORM SUBMISSION & GOOGLE SHEETS LOGIC ---
+    
+    // GẮN ĐƯỜNG LINK WEB APP CỦA BẠN VÀO ĐÂY
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyeiR9trr2WhpZ8iu-GrGRHD6I7-lird7r5T2jG3uyWCwfvHZ02TEprhAPgyuoG4K3A/exec"; 
+
+    const form = document.getElementById('mainForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const spinner = document.getElementById('spinner');
+    const successMsg = document.getElementById('successMsg');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (SCRIPT_URL === "VUI_LONG_THAY_THE_BANG_LINK_WEB_APP_CUA_BAN") {
+            alert("Vui lòng thay thế link Web App Apps Script vào dòng 276 trong mã HTML.");
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+        document.getElementById('btnAddOther').classList.add('opacity-50', 'pointer-events-none');
+        spinner.classList.remove('hidden');
+
+        const formData = new FormData(form);
+        
+        // Xử lý Checkbox Mối quan tâm chính (Tư vấn)
+        if (!document.getElementById('fs-tu-van').disabled) {
+            const selectedInterests = [];
+            document.querySelectorAll('input[name="Mối quan tâm chính"]:checked').forEach(cb => {
+                selectedInterests.push(cb.value);
+            });
+            formData.delete('Mối quan tâm chính');
+            if (selectedInterests.length > 0) {
+                formData.append('Mối quan tâm chính', selectedInterests.join(', '));
+            }
+        }
+
+        // Xử lý các trường "Khác"
+        if(formData.get('Chi tiết Du học') === 'Khác') {
+            formData.set('Chi tiết Du học', 'Khác: ' + formData.get('Chi tiết Du học (Khác)'));
+        }
+        if(formData.get('Kênh biết đến') === 'Khác') {
+            formData.set('Kênh biết đến', 'Khác: ' + formData.get('Kênh biết đến (Khác)'));
+        }
+
+        try {
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                form.classList.add('hidden');
+                document.getElementById('main-title').classList.add('hidden');
+                document.getElementById('main-desc').classList.add('hidden');
+                successMsg.classList.remove('hidden');
+            } else {
+                alert("Có lỗi xảy ra khi gửi. Vui lòng thử lại sau.");
+            }
+        } catch (error) {
+            console.error('Error!', error.message);
+            alert("Không thể kết nối. Kiểm tra lại kết nối mạng.");
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+            document.getElementById('btnAddOther').classList.remove('opacity-50', 'pointer-events-none');
+            spinner.classList.add('hidden');
+        }
+    });
+</script>
+
+</body>
+</html>
